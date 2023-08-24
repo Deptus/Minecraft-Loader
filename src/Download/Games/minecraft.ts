@@ -2,6 +2,7 @@ import got from 'got';
 import fs from 'fs';
 import path from 'path';
 import DownloadBase from '../base';
+import { arch, platform } from 'os';
 
 export default class MinecraftDownload {
 
@@ -11,6 +12,8 @@ export default class MinecraftDownload {
     private assetsUrl: string;
     private librariesUrl: string;
     private opt: boolean;
+    private oracleJava: boolean = true;
+    private msJava: boolean = false;
 
     constructor(opt: boolean) {
         this.opt = opt;
@@ -43,12 +46,45 @@ export default class MinecraftDownload {
         }
             
         if(url.includes(`https://piston-meta.mojang.com/`)) {
-            url.replace(`https://piston-meta.mojang.com/`, this.indexUrl);
+            url.replace(`https://piston-meta.mojang.com/`, this.metaUrl);
             return url;
         }
+
+        if(url.includes(`https://resources.download.minecraft.net/`)) {
+            url.replace(`https://resources.download.minecraft.net/`, this.assetsUrl);
+            return url;
+        }
+
+        if(url.includes(`https://libraries.minecraft.net/`)) {
+            url.replace(`https://libraries.minecraft.net/`, this.librariesUrl);
+            return url;
+        }
+
+        return "";
     }
     
     public DownloadIndex() {
         
+    }
+
+    private JavaUrlFetch(opt: "alpha" | "beta" | "gamma", arch: 1 | 2 | 3, os: "win" | "osx" | "linux") {
+        if(this.oracleJava) {
+
+        }
+    }
+
+    public JavaDownload(opt: "alpha" | "beta" | "gamma") {
+        if(this.oracleJava) {
+            let downloadUrl: string
+            switch(platform()) {
+                case "win32":
+                    if(arch() === "aarch64" || arch() === "aarch" || arch() === "arm" || arch() === "arm64")
+                        downloadUrl = ""
+                    downloadUrl = "https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.zip";
+                    break;
+                case "linux":
+                    downloadUrl = ""
+            }
+        }
     }
 }

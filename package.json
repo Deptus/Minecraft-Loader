@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@types/node": "^20.5.0",
+    "@xhmikosr/decompress": "^9.0.1",
     "got": "^13.0.0",
     "vite-plugin-dts": "^3.5.2"
   }
