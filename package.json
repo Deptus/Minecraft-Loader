@@ -1,8 +1,8 @@
 {
   "name": "dsml",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
   "files": [
     "dist"
   ],
@@ -14,18 +14,20 @@
     }
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc",
+    "test": "ts-node ./src/index.ts"
   },
   "devDependencies": {
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
-    "vite": "^4.3.2"
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@types/decompress": "^4.2.4",
     "@types/node": "^20.5.0",
-    "@xhmikosr/decompress": "^9.0.1",
-    "got": "^13.0.0",
-    "vite-plugin-dts": "^3.5.2"
+    "decompress": "^4.2.1",
+    "got": "^13.0.0"
   }
 }

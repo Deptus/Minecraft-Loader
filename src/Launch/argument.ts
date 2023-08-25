@@ -1,4 +1,4 @@
-import { platform } from "os";
+//import { platform } from "os";
 
 export class Arguments {
     private game: string = ""; 
@@ -31,22 +31,22 @@ export class Arguments {
     }
 }
 
-function makeClassPaths(paths: string[]): string {
-    let finalPath = "";
-    let split = (platform() === 'win32' ? ";" : ":");
-    paths.forEach((v, i) => {
-        if(i > 0)
-            finalPath += split;
-        finalPath += v;
-    })
-    return finalPath;
-}
+// function makeClassPaths(paths: string[]): string {
+//     let finalPath = "";
+//     let split = (platform() === 'win32' ? ";" : ":");
+//     paths.forEach((v, i) => {
+//         if(i > 0)
+//             finalPath += split;
+//         finalPath += v;
+//     })
+//     return finalPath;
+// }
 
-class Features {
-    public is_demo_user: boolean = false;
-    public has_custom_resolution: boolean = false;
-    public has_quick_plays_support: boolean = false;
-    public is_quick_play_singleplayer: boolean = false;
-    public is_quick_play_multiplayer: boolean = false;
-    public is_quick_play_realms: boolean = false;
-}
+// class Features {
+//     public is_demo_user: boolean = false;
+//     public has_custom_resolution: boolean = false;
+//     public has_quick_plays_support: boolean = false;
+//     public is_quick_play_singleplayer: boolean = false;
+//     public is_quick_play_multiplayer: boolean = false;
+//     public is_quick_play_realms: boolean = false;
+// }

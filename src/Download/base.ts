@@ -11,9 +11,14 @@ export default class DownloadBase {
         this.paths = paths;
         this.filenames = filenames;
     }
-    async download() {
+    async download(downloadProgress?: (process: number) => void) {
         const promises = this.urls.map((url, index) => {
-            return got.stream(url).pipe(fs.createWriteStream(path.join(this.paths[index], this.filenames[index])));
+            return (got.stream(url)
+                .pipe(fs.createWriteStream(path.join(this.paths[index], this.filenames[index])))
+                .on("downloadProgress", (process: { transferred: number; }) => {
+                    if(downloadProgress)
+                        downloadProgress(process.transferred);
+                }));
         })
         await Promise.all(promises);
     }

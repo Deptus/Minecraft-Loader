@@ -1,8 +1,9 @@
-import got from 'got';
-import fs from 'fs';
-import path from 'path';
-import DownloadBase from '../base';
-import { arch, platform } from 'os';
+// import got from 'got';
+// import fs from 'fs';
+// import path from 'path';
+// import DownloadBase from '../base';
+// import { arch, platform } from 'os';
+// import { MinecraftIndex } from '../../public';
 
 export default class MinecraftDownload {
 
@@ -12,11 +13,14 @@ export default class MinecraftDownload {
     private assetsUrl: string;
     private librariesUrl: string;
     private opt: boolean;
-    private oracleJava: boolean = true;
-    private msJava: boolean = false;
+    // private gamePath: string;
+    // private index: MinecraftIndex | undefined = undefined;
+    // private version: string;
 
-    constructor(opt: boolean) {
+    constructor(opt: boolean/*, gamePath: string, version: string*/) {
         this.opt = opt;
+        // this.gamePath = gamePath;
+        // this.version = version;
         if(opt) {
             this.coreUrl = 'https://bmclapi2.bangbang93.com/';
             this.indexUrl = 'https://bmclapi2.bangbang93.com/mc/game/version_manifest_v2.json';
@@ -63,28 +67,11 @@ export default class MinecraftDownload {
         return "";
     }
     
-    public DownloadIndex() {
+    public async DownloadIndex() {
         
     }
 
-    private JavaUrlFetch(opt: "alpha" | "beta" | "gamma", arch: 1 | 2 | 3, os: "win" | "osx" | "linux") {
-        if(this.oracleJava) {
+    public SizeCalc() {
 
-        }
-    }
-
-    public JavaDownload(opt: "alpha" | "beta" | "gamma") {
-        if(this.oracleJava) {
-            let downloadUrl: string
-            switch(platform()) {
-                case "win32":
-                    if(arch() === "aarch64" || arch() === "aarch" || arch() === "arm" || arch() === "arm64")
-                        downloadUrl = ""
-                    downloadUrl = "https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.zip";
-                    break;
-                case "linux":
-                    downloadUrl = ""
-            }
-        }
     }
 }
