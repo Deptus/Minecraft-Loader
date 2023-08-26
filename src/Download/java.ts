@@ -3,6 +3,7 @@ import DownloadBase from "./base";
 import path from "path";
 import fs from "fs"
 import decompress from "decompress";
+import { Progress } from "got";
 
 class SystemError extends Error {
     constructor() {
@@ -165,7 +166,7 @@ export default class JavaDownload {
         return "";
     }
 
-    public async JavaDownload(opt: "alpha" | "beta" | "gamma", gamePath: string, downloadProgress?: (process: number) => void) {
+    public async JavaDownload(opt: "alpha" | "beta" | "gamma", gamePath: string, downloadProgress?: (event: Progress) => void) {
         this.CheckPath(gamePath);
         let os: "win" | "osx" | "linux" = "win";
         let narch: 1 | 2 | 3 = 1;
@@ -214,8 +215,10 @@ export default class JavaDownload {
         fileNames.push(opt.toString() + format);
         const downloadProcess = new DownloadBase(urls, gamePaths, fileNames);
         await downloadProcess.download(downloadProgress);
-        await decompress(path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk"), opt.toString()) + format, 
-            path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk"), opt.toString()));
+        
+        decompress(`${gamePath}/runtime/${this.oracleJava ? "oracle" : "openjdk"}/${opt.toString()}${format}`).then(() => {
+            console.log("Decompressed " + `${gamePath}/runtime/${this.oracleJava ? "oracle" : "openjdk"}/${opt.toString()}${format}`);
+        });
         return;
     }
 }

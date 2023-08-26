@@ -16,12 +16,12 @@ export default {
         ],
     },
     resolve: {
-        extensions: ['.ts'],
+        extensions: ['.ts', '.js'],
         alias: {
             '*': path.resolve('node_modules/*')
         }
     },
     output: {
-        filename: '[name].js'
+        filename: '[name].cjs'
     }
 }
