@@ -17,8 +17,8 @@ export interface JVMArguments {
     rules: {
         action: "allow",
         os: {
-            name: "windows" | "osx" | "linux",
-            arch: "x86" | "x64" | "aarch64" | "arm64"
+            name?: "windows" | "osx" | "linux",
+            arch?: "x86" | "x64" | "aarch64" | "arm64"
         }
     }[];
     value: string[];
@@ -28,6 +28,24 @@ export interface Index {
     sha1: string,
     size: number,
     url: string
+}
+
+export interface LibraryIndex {
+    downloads: {
+        artifact: {
+            path: string,
+            sha1: string,
+            size: number,
+            url: string
+        },
+        name: string,
+        rules?: {
+            action: "allow",
+            os: {
+                name: "windows" | "osx" | "linux"
+            }
+        }[]
+    }
 }
 
 export interface MinecraftIndex {
@@ -53,6 +71,24 @@ export interface MinecraftIndex {
     id: string,
     javaVersion: {
         component: "java-runtime-alpha" | "java-runtime-beta" | "java-runtime-gamma",
-        
-    }
+        majorVersion: number
+    },
+    libraries: LibraryIndex[],
+    logging: {
+        client: {
+            argument: string,
+            file: {
+                id: string,
+                sha1: string,
+                size: number,
+                url: string
+            },
+            type: string
+        }
+    },
+    mainClass: string,
+    minimumLauncherVersion: number,
+    releaseTime: string,
+    time: string,
+    type: string
 }

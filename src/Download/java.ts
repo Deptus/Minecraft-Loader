@@ -2,8 +2,8 @@ import { arch, platform } from "os";
 import DownloadBase from "./base";
 import path from "path";
 import fs from "fs"
-import decompress from "decompress";
 import { Progress } from "got";
+import compress from "compressing";
 
 class SystemError extends Error {
     constructor() {
@@ -205,20 +205,16 @@ export default class JavaDownload {
             format = ".zip";
         else
             format = ".tar.gz";
-        const urls = [], gamePaths = [], fileNames = [];
+        const urls = [];
         urls.push(downloadUrl);
-        gamePaths.push(path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk")));
         if(!fs.existsSync(path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk"))))
             fs.mkdirSync(path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk")));
-        if(!fs.existsSync(path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk"), opt.toString())))
-            fs.mkdirSync(path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk"), opt.toString()));
-        fileNames.push(opt.toString() + format);
-        const downloadProcess = new DownloadBase(urls, gamePaths, fileNames);
-        await downloadProcess.download(downloadProgress);
-        
-        decompress(`${gamePath}/runtime/${this.oracleJava ? "oracle" : "openjdk"}/${opt.toString()}${format}`).then(() => {
-            console.log("Decompressed " + `${gamePath}/runtime/${this.oracleJava ? "oracle" : "openjdk"}/${opt.toString()}${format}`);
-        });
+        const downloadProcess = new DownloadBase(urls);
+        const buffer = await downloadProcess.downloadBuffer(downloadProgress);
+        if(format === '.zip')
+            await compress.zip.uncompress(buffer[0], path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk")));
+        else if(format === '.tar.gz')
+            await compress.tar.uncompress(buffer[0], path.join(gamePath, "runtime", (this.oracleJava ? "oracle" : "openjdk")));
         return;
     }
 }

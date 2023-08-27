@@ -14,8 +14,8 @@
     }
   },
   "scripts": {
-    "build": "tsc",
-    "test": "ts-node ./src/index.ts"
+    "build": "webpack",
+    "test": "webpack && node ./dist/main.cjs"
   },
   "devDependencies": {
     "ts-loader": "^9.4.4",
@@ -28,6 +28,7 @@
   "dependencies": {
     "@types/decompress": "^4.2.4",
     "@types/node": "^20.5.0",
+    "compressing": "^1.10.0",
     "decompress": "^4.2.1",
     "got": "^13.0.0"
   }
