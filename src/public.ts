@@ -37,15 +37,15 @@ export interface LibraryIndex {
             sha1: string,
             size: number,
             url: string
-        },
-        name: string,
-        rules?: {
-            action: "allow",
-            os: {
-                name: "windows" | "osx" | "linux"
-            }
-        }[]
-    }
+        }
+    },
+    name: string,
+    rules?: {
+        action: "allow",
+        os: {
+            name: "windows" | "osx" | "linux"
+        }
+    }[]
 }
 
 export interface MinecraftIndex {
@@ -91,4 +91,31 @@ export interface MinecraftIndex {
     releaseTime: string,
     time: string,
     type: string
+}
+
+export interface VersionManifest {
+    id: string,
+    type: "snapshot" | "release" | "old_alpha",
+    url: string,
+    time: string,
+    releaseTime: string,
+    sha1: string,
+    complianceLevel: number
+}
+
+export interface Manifest {
+    latest: {
+        release: string,
+        snapshot: string
+    },
+    versions: VersionManifest[]
+}
+
+export interface AssetIndex {
+    objects: {
+        [key: string]: {
+            hash: string,
+            size: number
+        }
+    }
 }

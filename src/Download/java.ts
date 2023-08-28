@@ -14,7 +14,7 @@ export default class JavaDownload {
     private oracleJava: boolean = true;
     private msJava: boolean = false;
 
-    public JavaOption(opt: "mojang" | "oracle" | "ms"): void {
+    public JavaOption(opt: "oracle" | "ms"): void {
         switch(opt) {
             case "oracle":
                 this.oracleJava = true;
@@ -166,7 +166,7 @@ export default class JavaDownload {
         return "";
     }
 
-    public async JavaDownload(opt: "alpha" | "beta" | "gamma", gamePath: string, downloadProgress?: (event: Progress) => void) {
+    public async JavaDownload(opt: "alpha" | "beta" | "gamma", gamePath: string, downloadProgress?: (event: Progress, lastByte?: number) => void) {
         this.CheckPath(gamePath);
         let os: "win" | "osx" | "linux" = "win";
         let narch: 1 | 2 | 3 = 1;
