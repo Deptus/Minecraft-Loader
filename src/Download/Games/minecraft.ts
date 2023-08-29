@@ -38,7 +38,7 @@ export default class MinecraftDownload {
         }
     }
 
-    private URLParse(url: string) {
+    public URLParse(url: string) {
         if(!this.opt)
             return url;
 
@@ -113,7 +113,7 @@ export default class MinecraftDownload {
         for(let key in obj)
             len++;
         for(let key in obj) {
-            if((i + 1) % 50 === 0 || i === len - 1) {
+            if((i + 1) % 1 === 0 || i === len - 1) {
                 urls.push(url);
                 paths.push(pathn);
                 filenames.push(filename);
@@ -180,7 +180,7 @@ export default class MinecraftDownload {
         let url: string[] = [], pathn: string[] = [], filename: string[] = [];
         const librariesPath = path.join(this.gamePath, "libraries");
         this.index.libraries.forEach((v, i) => {
-            if((i + 1) % 50 === 0 || (this.index && i === this.index.libraries.length - 1)) {
+            if((i + 1) % 1 === 0 || (this.index && i === this.index.libraries.length - 1)) {
                 urls.push(url);
                 paths.push(pathn);
                 filenames.push(filename);
@@ -209,7 +209,6 @@ export default class MinecraftDownload {
         const index = this.index!;
         total += index.assetIndex.totalSize;
         total += index.downloads.client.size;
-        total += index.assetIndex.size;
         index.libraries.forEach((v) => {
             total += v.downloads.artifact.size;
         })
@@ -235,6 +234,7 @@ export default class MinecraftDownload {
         console.log("Core:");
         const client = new DownloadBase([this.URLParse(this.index.downloads.client.url)], [path.join(this.gamePath, "versions", this.versionName)], [this.versionName + ".jar"]);
         await client.downloadAsync(downloadProgress);
+        console.log("Finished download version.");
         return;
     }
 }

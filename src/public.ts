@@ -119,3 +119,12 @@ export interface AssetIndex {
         }
     }
 }
+
+export interface FeatureValue {
+    is_demo_user?: boolean;
+    has_custom_resolution?: {height: number, width: number};
+    has_quick_plays_support?: string;
+    is_quick_play_singleplayer?: string;
+    is_quick_play_multiplayer?: string;
+    is_quick_play_realms?: string;
+}

@@ -37,12 +37,33 @@ export default class DownloadBase {
         const buffers: Buffer[] = [];
         const promises = this.urls.map(async (url) => {
             let last: number = 0;
-            buffers.push(await got.get(url)
-            .on("downloadProgress", event => {
-                if(downloadProgress)
-                    downloadProgress(event, last);
-                last = event.transferred;
-            }).buffer())
+            try {
+                buffers.push(await got.get(url)
+                .on("downloadProgress", event => {
+                    if(downloadProgress)
+                        downloadProgress(event, last);
+                    last = event.transferred;
+                }).buffer());
+            } catch {
+                try {
+                    last = 0;
+                    buffers.push(await got.get(url)
+                    .on("downloadProgress", event => {
+                        if(downloadProgress)
+                            downloadProgress(event, last);
+                        last = event.transferred;
+                    }).buffer());
+                } catch {
+                    last = 0;
+                    buffers.push(await got.get(url)
+                    .on("downloadProgress", event => {
+                        if(downloadProgress)
+                            downloadProgress(event, last);
+                        last = event.transferred;
+                    }).buffer());
+                }
+            }
+            
         });
         await Promise.all(promises); 
         return buffers;
@@ -52,12 +73,32 @@ export default class DownloadBase {
         const jsons: T[] = [];
         const promises = this.urls.map(async (url) => {
             let last: number = 0;
-            jsons.push(await got.get(url)
-            .on("downloadProgress", event => {
-                if(downloadProgress)
-                    downloadProgress(event, last);
-                last = event.transferred;
-            }).json<T>())
+            try {
+                jsons.push(await got.get(url)
+                .on("downloadProgress", event => {
+                    if(downloadProgress)
+                        downloadProgress(event, last);
+                    last = event.transferred;
+                }).json<T>());
+            } catch {
+                try {
+                    last = 0;
+                    jsons.push(await got.get(url)
+                    .on("downloadProgress", event => {
+                        if(downloadProgress)
+                            downloadProgress(event, last);
+                        last = event.transferred;
+                    }).json<T>());
+                } catch {
+                    last = 0;
+                    jsons.push(await got.get(url)
+                    .on("downloadProgress", event => {
+                        if(downloadProgress)
+                            downloadProgress(event, last);
+                        last = event.transferred;
+                    }).json<T>());
+                }
+            }
         });
         await Promise.all(promises); 
         return jsons;
@@ -76,32 +117,61 @@ export default class DownloadBase {
         for(let i = 0; i < concurrency; i++) {
             if(i === concurrency - 1)
                 end = length;
-            let last = 0;
-            workers.push(got.get(this.urls[0], {
-                headers: {
-                    Range: `bytes=${start}-${end - 1}`
-                }
-            })
-            .on("downloadProgress", event => {
-                if(downloadProgress)
-                    downloadProgress(event, last);
-                last = event.transferred;
-            }).buffer())
+            //console.log({i, start, end});
+            workers.push({start, end})
             start = end;
             end += std;
         }
         const promises = workers.map(async (v, i) => {
-            buffers[i] = await v;
+            let last = 0;
+            try {
+                buffers[i] = await got.get(this.urls[0], {
+                    headers: {
+                        Range: `bytes=${v.start}-${v.end - 1}`
+                    }
+                })
+                .on("downloadProgress", event => {
+                    if(downloadProgress)
+                        downloadProgress(event, last);
+                    last = event.transferred;
+                }).buffer();
+            } catch {
+                try {
+                    last = 0;
+                    buffers[i] = await got.get(this.urls[0], {
+                        headers: {
+                            Range: `bytes=${v.start}-${v.end - 1}`
+                        }
+                    })
+                    .on("downloadProgress", event => {
+                        if(downloadProgress)
+                            downloadProgress(event, last);
+                        last = event.transferred;
+                    }).buffer();
+                } catch {
+                    last = 0;
+                    buffers[i] = await got.get(this.urls[0], {
+                        headers: {
+                            Range: `bytes=${v.start}-${v.end - 1}`
+                        }
+                    })
+                    .on("downloadProgress", event => {
+                        if(downloadProgress)
+                            downloadProgress(event, last);
+                        last = event.transferred;
+                    }).buffer();
+                }
+            }
+            console.log("Finished chunk " + String(i));
         })
         await Promise.all(promises);
         if(!this.filenames || !this.paths)
             throw new Error("No filenames or paths input.");
         
-        const stream = fs.createWriteStream(this.paths[0] + this.filenames[0]);
-        const promise = buffers.map((v) => {
+        const stream = fs.createWriteStream(this.paths[0] + "/" + this.filenames[0]);
+        buffers.forEach((v) => {
             stream.write(v);
         })
-        await Promise.all(promise);
         stream.close();
     }
     /**
