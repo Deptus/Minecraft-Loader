@@ -10,7 +10,7 @@ export interface GameArguments {
             is_quick_play_realms?: boolean;
         }
     }[]
-    value: string[];
+    value: string[] | string;
 }
 
 export interface JVMArguments {
@@ -21,7 +21,7 @@ export interface JVMArguments {
             arch?: "x86" | "x64" | "aarch64" | "arm64"
         }
     }[];
-    value: string[];
+    value: string[] | string;
 }
 
 export interface Index {

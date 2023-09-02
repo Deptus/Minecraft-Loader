@@ -18,6 +18,7 @@
     "test": "webpack && node ./dist/main.cjs"
   },
   "devDependencies": {
+    "node-addon-api": "^7.0.0",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
@@ -28,6 +29,7 @@
   "dependencies": {
     "@types/decompress": "^4.2.4",
     "@types/node": "^20.5.0",
+    "cmake-js": "^7.2.1",
     "compressing": "^1.10.0",
     "decompress": "^4.2.1",
     "got": "^13.0.0"
